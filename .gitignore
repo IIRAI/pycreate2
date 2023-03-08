@@ -1,10 +1,14 @@
-*.pyc
+# folders
 old/
-.DS_Store
-._*
 __pycache__
 build/
 dist/
+.vscode/
+
+# files
+*.pyc
+.DS_Store
+._*
 *.egg-info
 .pytest_cache
 .mypy_cache
