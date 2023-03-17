@@ -7,7 +7,7 @@
 
 import struct  # there are 2 places that use this ... why?
 import time
-from pycreate2.packets import SensorPacketDecoder
+from pycreate2.packets import SensorPacketDecoder, Sensors
 from pycreate2.createSerial import SerialCommandInterface
 from pycreate2.OI import OPCODES
 from pycreate2.OI import DRIVE
@@ -296,9 +296,12 @@ class Create2(object):
         cmd = (100,)
         sensor_pkt_len = 80
 
-        self.SCI.write(opcode, cmd)
-        time.sleep(0.015)  # wait 15 msec
-        packet_byte_data = self.SCI.read(sensor_pkt_len)
-        sensors = SensorPacketDecoder(packet_byte_data)
-
-        return sensors
+        if self.SCI.connect:
+            self.SCI.write(opcode, cmd)
+            time.sleep(0.015)  # wait 15 msec
+            packet_byte_data = self.SCI.read(sensor_pkt_len)
+            sensors = SensorPacketDecoder(packet_byte_data)
+            return sensors
+        else:
+            print("Serial connection is not open")
+            return Sensors()

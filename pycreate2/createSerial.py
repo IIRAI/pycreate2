@@ -45,16 +45,21 @@ class SerialCommandInterface(object):
         # print self.ser.name
         if self.ser.is_open:
             self.ser.close()
-        self.ser.open()
+        try:
+            self.ser.open()
+        except:
+            print(f'Failed to open {port} at {baud}')
         if self.ser.is_open:
-            # print("Create opened serial: {}".format(self.ser))
+            self.connect = True
             print('-'*40)
             print(' Create opened serial connection')
             print('   port: {}'.format(self.ser.port))
             print('   datarate: {} bps'.format(self.ser.baudrate))
             print('-'*40)
         else:
-            raise Exception('Failed to open {} at {}'.format(port, baud))
+            # raise Exception('Failed to open {} at {}'.format(port, baud))
+            self.connect = False
+            print(f'Failed to open {port} at {baud}')
 
     def write(self, opcode, data=None):
         """
@@ -70,8 +75,8 @@ class SerialCommandInterface(object):
         # a None type to a tuple, we have to make this check.
         if data:
             msg += data
-        # print(">> write:", msg)
-        self.ser.write(struct.pack('B' * len(msg), *msg))
+        if self.ser.is_open:
+            self.ser.write(struct.pack('B' * len(msg), *msg))
 
     def read(self, num_bytes):
         """
