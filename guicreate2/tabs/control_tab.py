@@ -31,8 +31,10 @@ class ControlTab:
         ui.notify('start')
 
     def _update_control(self, x, y):
-        self.label_control.set_text(f"{x:.3f}, {y:.3f}")
+        self.label_control.set_text(f"{x * 100:.3f}, {y * 100:.3f}")
         self.control = [x, y]
+        # bot.drive_direct(lft, rht)
+        self.bot.drive_direct(int(x * 100), int(y * 100))
 
     def _update_mode(self, value):
         match self.mode_dict[value]:

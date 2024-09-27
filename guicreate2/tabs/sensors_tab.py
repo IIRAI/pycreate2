@@ -55,7 +55,7 @@ Sensor list:
 
 
 from nicegui import ui
-from  pycreate2 import Create2
+from pycreate2 import Create2
 
 
 class SensorTab:
@@ -81,13 +81,21 @@ class SensorTab:
                 {'sensor': 'open_interface_mode',   'value': self.open_interface_mode(self.s.open_interface_mode), 'unit': '-'},
                 {'sensor': 'dirt_detect',           'value': self.s.dirt_detect,           'unit': '-'},
                 {'sensor': 'ir_opcode',             'value': self.s.ir_opcode,             'unit': '-'},
-                {'sensor': 'buttons',               'value': self.s.buttons,               'unit': '-'},
+                {'sensor': 'buttons clean',         'value': self.s.buttons.clean,         'unit': '-'},
+                {'sensor': 'buttons spot',          'value': self.s.buttons.spot,          'unit': '-'},
+                {'sensor': 'buttons dock',          'value': self.s.buttons.dock,          'unit': '-'},
+                {'sensor': 'buttons minute',        'value': self.s.buttons.minute,        'unit': '-'},
+                {'sensor': 'buttons hour',          'value': self.s.buttons.hour,          'unit': '-'},
+                {'sensor': 'buttons day',           'value': self.s.buttons.day,           'unit': '-'},
+                {'sensor': 'buttons schedule',      'value': self.s.buttons.schedule,      'unit': '-'},
+                {'sensor': 'buttons clock',         'value': self.s.buttons.clock,         'unit': '-'},
                 {'sensor': 'song_number',           'value': self.s.song_number,           'unit': '-'},
                 {'sensor': 'song_playing',          'value': self.s.song_playing,          'unit': '-'},
                 {'sensor': 'oi_stream_num_packets', 'value': self.s.oi_stream_num_packets, 'unit': '-'},
                 {'sensor': 'ir_opcode_left',        'value': self.s.ir_opcode_left,        'unit': '-'},
                 {'sensor': 'ir_opcode_right',       'value': self.s.ir_opcode_right,       'unit': '-'},
-                {'sensor': 'stasis',                'value': self.s.stasis,                'unit': '-'},
+                {'sensor': 'stasis toggling',       'value': self.s.stasis.toggling,       'unit': '-'},
+                {'sensor': 'stasis disabled',       'value': self.s.stasis.disabled,       'unit': '-'},
             ],
             'rowSelection': 'multiple',
         }).style('width:600px; height:330px')
@@ -120,7 +128,10 @@ class SensorTab:
                 {'headerName': 'unit',  'field': 'unit'},
             ],
             'rowData': [
-                {'sensor': 'bumps_wheeldrops',          'value': self.s.bumps_wheeldrops,          'unit': '-'},
+                {'sensor': 'bumps_wheeldrops bump_left',       'value': self.s.bumps_wheeldrops.bump_left,       'unit': '-'},
+                {'sensor': 'bumps_wheeldrops bump_right',      'value': self.s.bumps_wheeldrops.bump_right,      'unit': '-'},
+                {'sensor': 'bumps_wheeldrops wheeldrop_left',  'value': self.s.bumps_wheeldrops.wheeldrop_left,  'unit': '-'},
+                {'sensor': 'bumps_wheeldrops wheeldrop_right', 'value': self.s.bumps_wheeldrops.wheeldrop_right, 'unit': '-'},
                 {'sensor': 'wall_signal',               'value': self.s.wall_signal,               'unit': '-'},
                 {'sensor': 'wall',                      'value': self.s.wall,                      'unit': 'bool'},
                 {'sensor': 'cliff_left',                'value': self.s.cliff_left,                'unit': 'bool'},
@@ -131,7 +142,7 @@ class SensorTab:
                 {'sensor': 'cliff_front_left_signal',   'value': self.s.cliff_front_left_signal,   'unit': '-'},
                 {'sensor': 'cliff_front_right_signal',  'value': self.s.cliff_front_right_signal,  'unit': '-'},
                 {'sensor': 'cliff_right_signal',        'value': self.s.cliff_right_signal,        'unit': '-'},
-                {'sensor': 'light_bumper',              'value': self.s.light_bumper,              'unit': '-'},
+                # {'sensor': 'light_bumper',              'value': self.s.light_bumper,              'unit': '-'},  # this has the same field of the following data
                 {'sensor': 'light_bumper_left',         'value': self.s.light_bumper_left,         'unit': '-'},
                 {'sensor': 'light_bumper_front_left',   'value': self.s.light_bumper_front_left,   'unit': '-'},
                 {'sensor': 'light_bumper_center_left',  'value': self.s.light_bumper_center_left,  'unit': '-'},
@@ -157,12 +168,16 @@ class SensorTab:
                 {'sensor': 'temperature',         'value': self.s.temperature,         'unit': 'deg C'},
                 {'sensor': 'battery_charge',      'value': self.s.battery_charge,      'unit': 'mAh'},
                 {'sensor': 'battery_capacity',    'value': self.s.battery_capacity,    'unit': 'mAh'},
-                {'sensor': 'charger_available',   'value': self.charger_available_state(self.s.charger_available),   'unit': '-'},
+                {'sensor': 'internal charger available', 'value': self.s.charger_available.internal_charger, 'unit': '-'},
+                {'sensor': 'home charger available',     'value': self.s.charger_available.home_base,        'unit': '-'},
                 {'sensor': 'left_motor_current',  'value': self.s.left_motor_current,  'unit': 'mA'},
                 {'sensor': 'right_motor_current', 'value': self.s.right_motor_current, 'unit': 'mA'},
                 {'sensor': 'main_brush_current',  'value': self.s.main_brush_current,  'unit': 'mA'},
                 {'sensor': 'side_brush_current',  'value': self.s.side_brush_current,  'unit': 'mA'},
-                {'sensor': 'overcurrents',        'value': self.s.overcurrents,        'unit': 'xxx'},
+                {'sensor': 'overcurrents side brush',  'value': self.s.overcurrents.side_brush_overcurrent,  'unit': 'xxx'},
+                {'sensor': 'overcurrents main brush',  'value': self.s.overcurrents.main_brush_overcurrent,  'unit': 'xxx'},
+                {'sensor': 'overcurrents right wheel', 'value': self.s.overcurrents.right_wheel_overcurrent, 'unit': 'xxx'},
+                {'sensor': 'overcurrents left wheel',  'value': self.s.overcurrents.left_wheel_overcurrent,  'unit': 'xxx'},
             ],
             'rowSelection': 'multiple',
         }).style('width:600px; height:370px')
@@ -184,7 +199,7 @@ class SensorTab:
                 return "safe"
             case 3:
                 return "full"
-            
+
     def charge_state(self, value):
         match value:
             case 0:
@@ -199,7 +214,7 @@ class SensorTab:
                 return "waiting"
             case 5:
                 return "charging fault condition"
-            
+
     def wheel_drops_state(self, value):
         msg = ""
         if value & 1:
@@ -213,29 +228,6 @@ class SensorTab:
         if msg == "":
             msg += "-"
         return msg
-
-    def charger_available_state(self, value):
-        """return the state of the available charger
-
-        The value is decoded from the bit value of the OI.  
-        The first bit is reserved for the internal charger,
-        the second bit is reserved for the home base.
-
-        Args:
-            value (uint): value between 0 and 3
-
-        Returns:
-            string: meaning of the value
-        """
-        match value:
-            case 0:
-                return "nothing available"
-            case 1:
-                return "internal charger"
-            case 2:
-                return "home base"
-            case 3:
-                return "home base and internal charger"
 
     def overcurrent_state(self, value):
         msg = ""

@@ -38,7 +38,7 @@ with ui.tab_panels(tabs, value='control'):
 with ui.footer(value=False) as footer:
     ui.label('V0.0.0')
 
-with ui.page_sticky(position='bottom-right', x_offset=20, y_offset=20):
-    ui.button(on_click=footer.toggle).props('fab icon=contact_support')
+#with ui.page_sticky(position='bottom-right', x_offset=20, y_offset=20):
+#    ui.button(on_click=footer.toggle).props('fab icon=contact_support')
 
 ui.run()
