@@ -23,9 +23,9 @@ class ControlTab:
         with ui.grid(columns=3).classes('w-full h-full'):
             with ui.card().classes('items-center col-span-1'):
                 self.left_joy = ui.joystick(color='blue', size=50,
-                            on_move=lambda e: self._update_control_left(e.y),
+                            on_move=lambda e: self._update_control_left(e.x),
                             on_end=lambda _: self._update_control_left(0),
-                            lockY=True)
+                            lockX=True)
                 self.left_control = ui.label('0 deg/s')
             with ui.card().classes('items-center col-span-1'):
                 ui.button('start', on_click=lambda _: self._start_robot())
