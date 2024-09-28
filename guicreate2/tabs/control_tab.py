@@ -22,7 +22,7 @@ class ControlTab:
                             on_move=lambda e: self._update_control_left(e.y),
                             on_end=lambda _: self._update_control_left(0),
                             lockY=True)
-                self.right_control = ui.label('0 mm/s')
+                self.left_control = ui.label('0 mm/s')
             with ui.card().classes('items-center col-span-1'):
                 ui.button('start', on_click=lambda _: self._start_robot())
                 self.mode_dict = {0: 'stop', 1:'passive', 2:'safe', 3:'full'}
