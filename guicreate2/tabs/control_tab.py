@@ -9,8 +9,8 @@ class ControlTab:
     def __init__(self, bot: Create2):
 
         self.bot_width_mm_ = 230
-        self.max_lin_speed_mm_ = 200
-        self.max_ang_speed_rad_ = 90 * 3.141592 / 180
+        self.max_lin_speed_mm_ = 250
+        self.max_ang_speed_rad_ = 70 * 3.141592 / 180
 
         self.bot = bot
         self.control = [0, 0]
@@ -46,7 +46,7 @@ class ControlTab:
         ui.notify('start')
 
     def _update_control_left(self, x):
-        speed = x * self.max_ang_speed_rad_
+        speed = - x * self.max_ang_speed_rad_
         self.left_control.set_text(f"{speed * 180 / 3.141592:.0f} deg/s")
         self.control[0] = int(speed)
 
