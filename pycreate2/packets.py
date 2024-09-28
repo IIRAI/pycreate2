@@ -88,7 +88,8 @@ def SensorPacketDecoder(data):
     """
 
     if len(data) != 80:
-        raise Exception('Sensor data not 80 bytes long, it is: {}'.format(len(data)))
+        print('Sensor data not 80 bytes long, it is: {}'.format(len(data)))
+        return Sensors()
 
     # packets 32, 33 or data bits 36, 37, 38 - unused
     # packet 16 or data bit 9 - unused

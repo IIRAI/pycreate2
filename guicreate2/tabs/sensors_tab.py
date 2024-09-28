@@ -184,10 +184,11 @@ class SensorTab:
 
     def update(self):
         self.s = self.bot.get_sensors()
-        self.grid_general.update()
-        self.grid_robot_state.update()
-        self.grid_obstacle.update()
-        self.grid_battery.update()
+        if self.s:
+            self.grid_general.update()
+            self.grid_robot_state.update()
+            self.grid_obstacle.update()
+            self.grid_battery.update()
 
     def open_interface_mode(self, value):
         match value:
