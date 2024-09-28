@@ -1,7 +1,7 @@
 
+import copy
 from nicegui import ui
 from  pycreate2 import Create2
-
 
 
 class ControlTab:
@@ -18,7 +18,7 @@ class ControlTab:
         # start, close
         with ui.grid(columns=3).classes('w-full h-full'):
             with ui.card().classes('items-center col-span-1'):
-                ui.joystick(color='blue', size=50,
+                self.left_joy = ui.joystick(color='blue', size=50,
                             on_move=lambda e: self._update_control_left(e.y),
                             on_end=lambda _: self._update_control_left(0),
                             lockY=True)
@@ -29,7 +29,7 @@ class ControlTab:
                 robot_mode = ui.toggle(self.mode_dict, value = 0,
                                        on_change=lambda mode: self._update_mode(mode.value))
             with ui.card().classes('items-center col-span-1'):
-                ui.joystick(color='blue', size=50,
+                self.right_joy = ui.joystick(color='blue', size=50,
                             on_move=lambda e: self._update_control_right(e.y),
                             on_end=lambda _: self._update_control_right(0),
                             lockY=True)
@@ -43,16 +43,16 @@ class ControlTab:
 
     def _update_control_left(self, x):
         self.left_control.set_text(f"{x * 100:.0f} mm/s")
-        self.control[0] = int(x * 100)
+        self.control[0] = int(x * 300)
 
     def _update_control_right(self, x):
         self.right_control.set_text(f"{x * 100:.0f} mm/s")
-        self.control[1] = int(x * 100)
+        self.control[1] = int(x * 300)
 
     def timer_callback(self):
         if self.control != self.control_old:
-            self.control_old = self.control
-            self.bot.drive_direct(self.control[0], self.control[1])
+            self.control_old = copy.deepcopy(self.control)
+            self.bot.drive_direct(self.control[1], self.control[0])
 
     def _update_mode(self, value):
         match self.mode_dict[value]:
